@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-
-const Signup = () => <div>Signup</div>;
-const Signin = () => <div>Signin</div>;
-
+import Signin from "../components/signin";
+import Signup from "../components/signup";
 const Homepage = () => {
   const [activeComponent, setActiveComponent] = useState("signin");
 
