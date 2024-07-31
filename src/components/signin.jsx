@@ -1,17 +1,43 @@
 import React, { useState } from "react";
-
+import { toast } from "react-toastify";
+import { json, useNavigate} from "react-router-dom";
+import axios from "axios";
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-
-  const handleSubmit = (e) => {
+  const [show ,setShow]=useState(false);
+  const [loading,setLoading]=useState(false);
+  
+  const navigate=useNavigate();
+  
+  const handleSubmit = async(e) => {
     e.preventDefault();
+    setLoading(true);
     if (!email || !password) {
-      setError("Please fill in all fields");
+      toast.warning("Please fill in all fields",{autoClose:3000});
+      setLoading(false);
       return;
     }
-    setError("");
+    try{
+      const config={
+        headers:{
+          "content-type":"application/json",
+        },
+      };
+      const{data}=await axios.post(
+        "/api/user/login",
+        {email,password},
+        config
+      );
+      toast.success("login successful",{autoClose:3000});
+      localStorage.setItem("userInfo",JSON.stringify(data));
+      setLoading(false);
+      navigate("/chats");
+    }catch(error){
+      toast.error("error occured!!",{autoClose:3000});
+      setLoading(false);
+    }
+
     
   };
 
@@ -56,12 +82,12 @@ const SignIn = () => {
           Password
         </label>
       </div>
-      {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
       <button
         type="submit"
         className=" text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm  px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-600 dark:focus:ring-blue-800"
+        disabled={loading}
       >
-        Sign In
+        {loading ? "Loading..." : "Log In"}{" "}
       </button>
     </form>
   );
