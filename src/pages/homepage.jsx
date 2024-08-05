@@ -1,9 +1,18 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Signin from "../components/signin";
 import Signup from "../components/signup";
+import { useNavigate } from "react-router-dom";
 const Homepage = () => {
   const [activeComponent, setActiveComponent] = useState("signin");
+const navigate = useNavigate();
 
+useEffect(() => {
+  const user = JSON.parse(localStorage.getItem("userInfo"));
+  
+  if (user) {
+    navigate("/chats");
+  }
+}, [navigate]);
   return (
     <div className="bg-gray-200 h-screen flex flex-col items-center justify-center">
       <div className="text-3xl font-bold mb-8 ">TALKE</div>
