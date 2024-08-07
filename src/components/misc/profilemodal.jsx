@@ -1,6 +1,10 @@
 import React from "react";
 
 const Profilemodal = ({ user, showModal, setShowModal }) => {
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
   return (
     <>
       {showModal && (
@@ -8,7 +12,7 @@ const Profilemodal = ({ user, showModal, setShowModal }) => {
           {/* Modal Overlay */}
           <div
             className="fixed inset-0 bg-black opacity-50"
-            onClick={() => setShowModal(false)}
+            onClick={closeModal}
           ></div>
 
           {/* Modal Content */}
@@ -18,7 +22,7 @@ const Profilemodal = ({ user, showModal, setShowModal }) => {
               <h3 className="text-2xl font-semibold">Profile</h3>
               <button
                 className="text-black text-2xl outline-none focus:outline-none"
-                onClick={() => setShowModal(false)}
+                onClick={closeModal}
               >
                 &times;
               </button>
@@ -39,7 +43,7 @@ const Profilemodal = ({ user, showModal, setShowModal }) => {
             <div className="flex justify-end">
               <button
                 className="px-4 py-2 text-sm bg-gray-200 rounded hover:bg-gray-300 focus:outline-none"
-                onClick={() => setShowModal(false)}
+                onClick={closeModal}
               >
                 Close
               </button>

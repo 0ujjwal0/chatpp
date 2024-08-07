@@ -6,27 +6,33 @@ import Avatar from "@mui/material/Avatar";
 import { ChatState } from "../../context/chatprovider";
 import Profilemodal from "./profilemodal";
 import { useNavigate } from "react-router-dom";
-import ChatLoading from "../chatloading"; 
+import ChatLoading from "../chatloading";
 import UserListItem from "../useravatar/userlistitem";
-import {toast} from "react-toastify";
-import axios  from "axios";
+import { toast } from "react-toastify";
+import axios from "axios";
+
 const Sidedrawer = () => {
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingChat, setLoadingChat] = useState(false);
-  const { user,setSelectedChat,chats,setChats } = ChatState();
-  const [isOpen, setIsOpen] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  const [isOpen, setIsOpen] = useState(false); // For search drawer
+  const [menuIsOpen, setMenuIsOpen] = useState(false); // For dropdown menu
+  const [showProfileModal, setShowProfileModal] = useState(false); // For profile modal
+  const { user, setSelectedChat, chats, setChats } = ChatState();
   const navigate = useNavigate();
 
   const toggleDropdown = () => {
-    setIsOpen(!isOpen);
+    setMenuIsOpen(!menuIsOpen);
   };
 
   const openProfileModal = () => {
-    setShowModal(true);
-    setIsOpen(false); // Close the dropdown when opening the modal
+    setShowProfileModal(true);
+    setMenuIsOpen(false); // Close the dropdown menu when opening the modal
+  };
+
+  const closeProfileModal = () => {
+    setShowProfileModal(false);
   };
 
   const logoutHandler = () => {
@@ -34,54 +40,58 @@ const Sidedrawer = () => {
     navigate("/");
   };
 
-  const handleSearch = async() => {
-    if(!search){
-      toast.error("Please enter something in search field", { autoClose: 3000 });
-    return;
+  const handleSearch = async () => {
+    if (!search) {
+      toast.error("Please enter something in search field", {
+        autoClose: 3000,
+      });
+      return;
     }
-    try{
-      setLoading(true)
-
-      const config={
-        headers:{
-          Authorization:`Bearer ${user.token}`,
-        }
-      }
-const {data}= await axios.get(`/api/user?search=${search}`,config);
-setLoading(false);
-setSearchResult(data);
-    }catch(error){
-  toast.error('error occured! failed to load the search',{autoClose:3000})
+    try {
+      setLoading(true);
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+      const { data } = await axios.get(`/api/user?search=${search}`, config);
+      setLoading(false);
+      setSearchResult(data);
+    } catch (error) {
+      toast.error("Error occurred! Failed to load the search", {
+        autoClose: 3000,
+      });
     }
   };
- const accessChat = async (userId) => {
-   try {
-     setLoadingChat(true);
-     const config = {
-       headers: {
-         "Content-Type": "application/json",
-         Authorization: `Bearer ${user.token}`,
-       },
-     };
-     const { data } = await axios.post("/api/chat", { userId }, config);
-     console.log("Chat data:", data); // Debug log
-     if (!chats.find((c) => c._id === data._id)) setChats([data, ...chats]);
-     setSelectedChat(data);
-     setLoadingChat(false);
-   } catch (error) {
-     console.error("Chat access error:", error); // Debug log
-     toast.error("Error fetching the chats", { autoClose: 3000 });
-   } finally {
-     setLoadingChat(false);
-   }
- };
+
+  const accessChat = async (userId) => {
+    try {
+      setLoadingChat(true);
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+      const { data } = await axios.post("/api/chat", { userId }, config);
+      console.log("Chat data:", data); // Debug log
+      if (!chats.find((c) => c._id === data._id)) setChats([data, ...chats]);
+      setSelectedChat(data);
+      setLoadingChat(false);
+    } catch (error) {
+      console.error("Chat access error:", error); // Debug log
+      toast.error("Error fetching the chats", { autoClose: 3000 });
+    } finally {
+      setLoadingChat(false);
+    }
+  };
 
   return (
     <div className="bg-white flex justify-between items-center">
       <div className="p-4">
         <button
           aria-label="Search"
-          onClick={() => setIsOpen(true)}
+          onClick={() => setIsOpen(true)} // For search drawer
         >
           <SearchIcon fontSize="small" />
           Search
@@ -93,7 +103,7 @@ setSearchResult(data);
           <NotificationsActiveIcon className="mr-1" />
         </button>
         <button
-          onClick={toggleDropdown}
+          onClick={toggleDropdown} // For dropdown menu
           aria-label="User menu"
         >
           <div className="flex bg-gray-200 rounded-xl px-3 py-1 items-center">
@@ -105,7 +115,7 @@ setSearchResult(data);
             <ArrowDropDownOutlinedIcon className="text-xl rounded bg-gray-100 p-1" />
           </div>
         </button>
-        {isOpen && (
+        {menuIsOpen && (
           <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
             <div className="py-1">
               <button
@@ -125,8 +135,8 @@ setSearchResult(data);
         )}
         <Profilemodal
           user={user}
-          showModal={showModal}
-          setShowModal={setShowModal}
+          showModal={showProfileModal}
+          setShowModal={closeProfileModal}
         />
       </div>
       <div
