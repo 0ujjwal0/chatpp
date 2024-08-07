@@ -5,69 +5,180 @@ import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined
 import Avatar from "@mui/material/Avatar";
 import { ChatState } from "../../context/chatprovider";
 import Profilemodal from "./profilemodal";
+import { useNavigate } from "react-router-dom";
+import ChatLoading from "../chatloading"; 
+import UserListItem from "../useravatar/userlistitem";
+import {toast} from "react-toastify";
+import axios  from "axios";
 const Sidedrawer = () => {
   const [search, setSearch] = useState("");
-  const [searchresult, setSearchresult] = useState([]);
-  const [loading, setloading] = useState(false);
-  const [loadingchat, setloadingchat] = useState();
-  const {user}=ChatState();
+  const [searchResult, setSearchResult] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [loadingChat, setLoadingChat] = useState(false);
+  const { user,setSelectedChat,chats,setChats } = ChatState();
   const [isOpen, setIsOpen] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
+
+  const openProfileModal = () => {
+    setShowModal(true);
+    setIsOpen(false); // Close the dropdown when opening the modal
+  };
+
+  const logoutHandler = () => {
+    localStorage.removeItem("userInfo");
+    navigate("/");
+  };
+
+  const handleSearch = async() => {
+    if(!search){
+      toast.error("Please enter something in search field", { autoClose: 3000 });
+    return;
+    }
+    try{
+      setLoading(true)
+
+      const config={
+        headers:{
+          Authorization:`Bearer ${user.token}`,
+        }
+      }
+const {data}= await axios.get(`/api/user?search=${search}`,config);
+setLoading(false);
+setSearchResult(data);
+    }catch(error){
+  toast.error('error occured! failed to load the search',{autoClose:3000})
+    }
+  };
+ const accessChat = async (userId) => {
+   try {
+     setLoadingChat(true);
+     const config = {
+       headers: {
+         "Content-Type": "application/json",
+         Authorization: `Bearer ${user.token}`,
+       },
+     };
+     const { data } = await axios.post("/api/chat", { userId }, config);
+     console.log("Chat data:", data); // Debug log
+     if (!chats.find((c) => c._id === data._id)) setChats([data, ...chats]);
+     setSelectedChat(data);
+     setLoadingChat(false);
+   } catch (error) {
+     console.error("Chat access error:", error); // Debug log
+     toast.error("Error fetching the chats", { autoClose: 3000 });
+   } finally {
+     setLoadingChat(false);
+   }
+ };
+
   return (
-    <div className="bg-white flex justify-between">
+    <div className="bg-white flex justify-between items-center">
       <div className="p-4">
-        <button>
-          <SearchIcon
-            fontSize="small"
-            className=""
-          />
-          search
+        <button
+          aria-label="Search"
+          onClick={() => setIsOpen(true)}
+        >
+          <SearchIcon fontSize="small" />
+          Search
         </button>
       </div>
       <h1 className="p-4 text-xl">Talkie</h1>
-      <div className="p-4">
-        <button>
-          <NotificationsActiveIcon sx={{ marginRight: 1 }} />
+      <div className="p-4 relative">
+        <button aria-label="Notifications">
+          <NotificationsActiveIcon className="mr-1" />
         </button>
-        <button onClick={toggleDropdown}>
-          <div className="flex bg-gray-200 rounded-xl px-3 py-1">
+        <button
+          onClick={toggleDropdown}
+          aria-label="User menu"
+        >
+          <div className="flex bg-gray-200 rounded-xl px-3 py-1 items-center">
             <Avatar
-              alt="Travis Howard"
+              alt={user.name}
               src={user.pic}
-              sx={{ width: 30, height: 30, marginRight: 1 }}
-              name={user.name}
-              cursor="pointer"
+              className="w-8 h-8 mr-1"
             />
-            <ArrowDropDownOutlinedIcon
-              sx={{ fontSize: 30 }}
-              className="rounded bg-gray-100 p-1 "
-            />
+            <ArrowDropDownOutlinedIcon className="text-xl rounded bg-gray-100 p-1" />
           </div>
         </button>
         {isOpen && (
           <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
             <div className="py-1">
-              <a
-                href="#"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              <button
+                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                onClick={openProfileModal}
               >
                 Profile
-              </a>
-
-              <a
-                href="#"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              </button>
+              <button
+                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                onClick={logoutHandler}
               >
                 Logout
-              </a>
+              </button>
             </div>
           </div>
         )}
+        <Profilemodal
+          user={user}
+          showModal={showModal}
+          setShowModal={setShowModal}
+        />
       </div>
-      <Profilemodal />
+      <div
+        className={`fixed inset-0 z-50 ${
+          isOpen ? "flex" : "hidden"
+        } bg-gray-600 bg-opacity-50 justify-center items-start`}
+      >
+        <div className="relative w-80 bg-white rounded-lg shadow-lg overflow-hidden">
+          <div className="p-4 border-b border-gray-200">
+            <h2 className="text-lg font-medium">Search Users</h2>
+            <button
+              className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
+              onClick={() => setIsOpen(false)}
+            >
+              &times;
+            </button>
+          </div>
+          <div className="p-4">
+            <div className="flex items-center mb-4">
+              <input
+                type="text"
+                placeholder="Search by name or email"
+                className="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+              <button
+                className="ml-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none"
+                onClick={handleSearch}
+              >
+                Go
+              </button>
+            </div>
+            {loading ? (
+              <ChatLoading />
+            ) : (
+              searchResult?.map((user) => (
+                <UserListItem
+                  key={user._id}
+                  user={user}
+                  handleFunction={() => accessChat(user._id)}
+                />
+              ))
+            )}
+            {loadingChat && (
+              <div className="flex justify-center mt-4">
+                <div className="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-6 w-6"></div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
