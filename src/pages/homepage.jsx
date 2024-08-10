@@ -42,7 +42,7 @@ const Homepage = () => {
           <div className="flex w-full justify-around mb-4">
             {activeComponent === "signup" && (
               <button
-                className="px-2 py-1 rounded-full w-full hover:border border-rose-300 text-gray-800  hover:text-rose-200"
+                className="px-2 py-1 rounded-full w-full hover:border border-rose-300  text-gray-800  hover:text-rose-200"
                 onClick={() => setActiveComponent("signin")}
               >
                 Login
