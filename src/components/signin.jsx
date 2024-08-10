@@ -55,7 +55,7 @@ const SignIn = () => {
           placeholder=" "
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          required
+          
         />
         <label
           htmlFor="signin_email"
@@ -74,7 +74,7 @@ const SignIn = () => {
           placeholder=" "
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          required
+          
         />
         <label
           htmlFor="signin_password"

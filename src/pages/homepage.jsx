@@ -16,7 +16,7 @@ const Homepage = () => {
 
   return (
     <div className="bg-backg1 bg-cover bg-center bg-no-repeat h-screen flex flex-col items-center justify-center">
-      <div className="flex flex-col items-center justify-between h-3/4 w-full max-w-md border rounded-lg shadow-2xl">
+      <div className="flex flex-col items-center justify-between h-auto min-h-2-3 w-full max-w-md border rounded-lg shadow-2xl">
         {activeComponent === "signin" && (
           <>
             <div className="bg-backg1 bg-cover bg-center bg-no-repeat w-full h-full flex flex-col items-center justify-evenly">

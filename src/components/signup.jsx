@@ -96,7 +96,7 @@ const Signup = () => {
           placeholder=" "
           value={name}
           onChange={(e) => setName(e.target.value)}
-          required
+           
         />
         <label
           htmlFor="floating_name"
@@ -114,7 +114,7 @@ const Signup = () => {
           placeholder=" "
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          required
+          
         />
         <label
           htmlFor="floating_email"
@@ -132,7 +132,7 @@ const Signup = () => {
           placeholder=" "
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          required
+          
         />
         <label
           htmlFor="floating_password"
@@ -150,7 +150,7 @@ const Signup = () => {
           placeholder=" "
           value={confirmpass}
           onChange={(e) => setConfirmpass(e.target.value)}
-          required
+           
         />
         <label
           htmlFor="floating_repeat_password"
@@ -167,7 +167,7 @@ const Signup = () => {
           className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent rounded-lg border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
           placeholder=" "
           onChange={(e) => postDetails(e.target.files[0])}
-          required
+          
         />
         <label
           htmlFor="profile_picture"
