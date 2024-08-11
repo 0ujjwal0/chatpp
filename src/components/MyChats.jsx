@@ -7,7 +7,7 @@ import { getSender } from "../config/chatlogics";
 import ChatLoading from "./chatloading";
 import Groupchatmodal from "./misc/groupchatmodal";
 
-const MyChats = ({fetchAgain}) => {
+const MyChats = ({ fetchAgain }) => {
   const [loggedUser, setLoggedUser] = useState();
   const { selectedChat, setSelectedChat, user, chats, setChats } = ChatState();
 
@@ -46,25 +46,24 @@ const MyChats = ({fetchAgain}) => {
 
   return (
     <div
-      className={`flex flex-col items-center p-3 bg-white border rounded-lg border-gray-200
-      ${selectedChat ? "hidden md:flex" : "flex"}`}
+      className={`flex flex-col items-center p-3 bg-white rounded-lg w-full md:w-1/4 border border-b-violet-500
+  ${selectedChat ? "hidden md:flex" : "flex"}`}
     >
       <div
-        className={`flex justify-between items-center p-3 pb-3 px-3 w-full
-      text-2xl md:text-3xl font-sans`}
+        className={`flex justify-end items-center p-3 pb-3 w-full 
+    text-xl md:text-2xl lg:text-3xl font-sans`}
       >
-        chats
         <Groupchatmodal>
           <button
-            className={`flex items-center px-4 py-2 rounded-lg text-white bg-blue-500
-        text-sm lg:text-base md:text-xs font-medium hover:bg-blue-600 focus:outline-none`}
+            className={`hover:text-white hover:bg-violet-500
+        text-sm md:text-xs lg:text-base text-gray-600 focus:outline-none px-2 rounded-lg border border-b-violet-500`}
           >
-            <AddIcon className="mr-2" />
-            New Group Chat
+            <AddIcon className="text-violet-600 " />
+            New Group
           </button>
         </Groupchatmodal>
       </div>
-      <div className="flex flex-col p-3 bg-gray-100 w-full h-full rounded-lg overflow-hidden">
+      <div className="flex flex-col p-3 bg-white w-full h-full shadow-lg rounded-lg overflow-hidden border ">
         <div className="flex flex-col overflow-y-auto">
           {chats ? (
             <div className="flex flex-col space-y-2">
@@ -72,10 +71,10 @@ const MyChats = ({fetchAgain}) => {
                 <div
                   key={chat._id}
                   onClick={() => setSelectedChat(chat)}
-                  className={`cursor-pointer px-3 py-2 rounded-lg ${
+                  className={`cursor-pointer px-3 py-2 rounded-lg border border-b-violet-500 ${
                     selectedChat === chat
-                      ? "bg-teal-500 text-white"
-                      : "bg-gray-200 text-black"
+                      ? "text-white bg-violet-500"
+                      : "bg-gray-100 text-violet-900  hover:bg-violet-200"
                   }`}
                 >
                   <div>

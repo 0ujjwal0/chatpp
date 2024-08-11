@@ -9,6 +9,10 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const { user, selectedChat, setSelectedChat } = ChatState();
   const [showModal, setShowModal] = useState(false);
 
+  const capitalizeFirstLetter=(string)=> {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
   const handleProfileClick = () => {
     setShowModal(true);
   };
@@ -17,12 +21,16 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     <>
       {selectedChat ? (
         <>
-          <div className="flex justify-between items-center w-full">
-            <ArrowBackIosNewIcon onClick={() => setSelectedChat("")} />
+          <div className="flex justify-between items-center w-full border border-b-violet-300 rounded-lg p-1 px-2">
+            <ArrowBackIosNewIcon className="text-violet-500" onClick={() => setSelectedChat("")} />
             {!selectedChat.isGroupChat ? (
               <div className="text-2xl font-bold">
-                {getSender(user, selectedChat.users)}
-                <button onClick={handleProfileClick}>View Profile</button>
+                <button
+                  className="text-violet-500 hover:text-violet-300 rounded-md px-1"
+                  onClick={handleProfileClick}
+                >
+                  {capitalizeFirstLetter(getSender(user, selectedChat.users))}
+                </button>
                 <Profilemodal
                   user={getSenderFull(user, selectedChat.users)}
                   showModal={showModal}
@@ -33,7 +41,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               <div className="text-2xl font-bold">
                 {selectedChat.chatName.toUpperCase()}
                 <UpdateGroupChatModal
-                  
                   fetchAgain={fetchAgain}
                   setFetchAgain={setFetchAgain}
                 />

@@ -1,7 +1,7 @@
 import React from "react";
 import { ChatState } from "../../context/chatprovider";
 
-const UserListItem = ({ user,handleFunction }) => {
+const UserListItem = ({ user,handleFunction,set }) => {
 
   return (
     <div
@@ -13,7 +13,7 @@ const UserListItem = ({ user,handleFunction }) => {
         src={user.pic}
         alt={user.name}
       />
-      <div>
+      <div onClick={()=>set(true)}>
         <p className="text-black">{user.name}</p>
         <p className="text-xs text-gray-600">
           <strong>Email : </strong>

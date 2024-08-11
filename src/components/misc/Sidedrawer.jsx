@@ -40,13 +40,9 @@ const Sidedrawer = () => {
     navigate("/");
   };
 
-  const handleSearch = async () => {
-    if (!search) {
-      toast.error("Please enter something in search field", {
-        autoClose: 3000,
-      });
-      return;
-    }
+  const handleSearch = async (e) => {
+    setSearch(e.target.value);
+
     try {
       setLoading(true);
       const config = {
@@ -87,45 +83,52 @@ const Sidedrawer = () => {
   };
 
   return (
-    <div className="bg-white flex justify-between items-center">
-      <div className="p-4">
-        <button
-          aria-label="Search"
-          onClick={() => setIsOpen(true)} // For search drawer
-        >
-          <SearchIcon fontSize="small" />
-          Search
-        </button>
+    <div className="border border-b-2 border-b-gray-300 bg-white flex justify-between items-center">
+      <div className="p-4 relative ">
+        <input
+          className="rounded-lg py-1 px-4 w-full focus:outline-none bg-gray-200 text-violet-300 hover:bg-violet-100" // Added padding to make space for the icon
+          onClick={() => setIsOpen(true)}
+          placeholder="search"
+        />
+        <div className="absolute inset-y-0 right-7 flex items-center pointer-events-none focus:outline-none">
+          <SearchIcon className=" text-violet-500 " />
+        </div>
       </div>
-      <h1 className="p-4 text-xl">Talkie</h1>
-      <div className="p-4 relative">
-        <button aria-label="Notifications">
-          <NotificationsActiveIcon className="mr-1" />
+
+      <h1 className="p-4 text-xl text-violet-700 font-bold cursor-pointer hidden sm:block ">
+        CAMP
+      </h1>
+
+      <div className="p-4 relative flex ">
+        <button
+          aria-label="Notifications "
+          className="hidden md:flex mt-2"
+        >
+          <NotificationsActiveIcon className=" text-violet-500" />
         </button>
         <button
           onClick={toggleDropdown} // For dropdown menu
           aria-label="User menu"
         >
-          <div className="flex bg-gray-200 rounded-xl px-3 py-1 items-center">
+          <div className="px-1 md:px-4 rounded-xl  items-center">
             <Avatar
               alt={user.name}
               src={user.pic}
-              className="w-8 h-8 mr-1"
+              className=" text-violet-400"
             />
-            <ArrowDropDownOutlinedIcon className="text-xl rounded bg-gray-100 p-1" />
           </div>
         </button>
         {menuIsOpen && (
-          <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
+          <div className="absolute right-1 mt-12 w-48 bg-white border border-b-violet-600 rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
             <div className="py-1">
               <button
-                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-violet-600"
                 onClick={openProfileModal}
               >
                 Profile
               </button>
               <button
-                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-violet-600"
                 onClick={logoutHandler}
               >
                 Logout
@@ -140,13 +143,16 @@ const Sidedrawer = () => {
         />
       </div>
       <div
-        className={`fixed inset-0 z-50 ${
+        className={`fixed inset-0 x-0 z-50 ${
           isOpen ? "flex" : "hidden"
-        } bg-gray-600 bg-opacity-50 justify-center items-start`}
+        } bg-gray-600 bg-opacity-60 `}
+        onClick={() => setIsOpen(false)}
       >
-        <div className="relative w-80 bg-white rounded-lg shadow-lg overflow-hidden">
-          <div className="p-4 border-b border-gray-200">
-            <h2 className="text-lg font-medium">Search Users</h2>
+        <div
+          className="relative w-80 h-screen  bg-white rounded-lg shadow-lg overflow-hidden"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="p-4 ">
             <button
               className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
               onClick={() => setIsOpen(false)}
@@ -159,16 +165,10 @@ const Sidedrawer = () => {
               <input
                 type="text"
                 placeholder="Search by name or email"
-                className="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                className="flex-1 m-2 px-2 py-2 border rounded-lg focus:outline-none "
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) => handleSearch(e)}
               />
-              <button
-                className="ml-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none"
-                onClick={handleSearch}
-              >
-                Go
-              </button>
             </div>
             {loading ? (
               <ChatLoading />
@@ -178,6 +178,7 @@ const Sidedrawer = () => {
                   key={user._id}
                   user={user}
                   handleFunction={() => accessChat(user._id)}
+                  set={() => setIsOpen(false)}
                 />
               ))
             )}
