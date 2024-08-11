@@ -155,7 +155,9 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
             >
               &times;
             </button>
-            <h2 className="text-2xl font-bold mb-4">{selectedChat.chatName}</h2>
+            <h2 className="text-2xl font-bold mb-4 text-violet-700">
+              {selectedChat.chatName.toUpperCase()}
+            </h2>
             <div className="w-full flex flex-wrap mb-4">
               {selectedChat.users.map((u) => (
                 <UserBadgeItem
@@ -172,11 +174,11 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
                 placeholder="Chat Name"
                 value={groupChatName}
                 onChange={(e) => setGroupChatName(e.target.value)}
-                className="flex-grow px-4 py-2 border rounded-l-md"
+                className="flex-grow px-4 py-2 rounded-l-md border-b-2 border-violet-500 focus:outline-none text-gray-600"
               />
               <button
                 onClick={handleRename}
-                className="px-4 py-2 bg-teal-500 text-white rounded-r-md"
+                className="px-4 py-2 bg-gray-00 hover:bg-violet-400 hover:text-violet-50 text-violet-300 rounded-r-md border-b-2 border-violet-500"
                 disabled={renameloading}
               >
                 {renameloading ? "Updating..." : "Update"}
@@ -186,7 +188,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
               type="text"
               placeholder="Add User to group"
               onChange={(e) => handleSearch(e.target.value)}
-              className="w-full px-4 py-2 mb-4 border rounded-md"
+              className="w-full px-4 py-2 mb-4  rounded-md focus:outline-none text-gray-600 border-b-2 border-violet-500"
             />
             {loading ? (
               <div className="spinner-border animate-spin inline-block w-6 h-6 border-4 rounded-full" />
@@ -201,7 +203,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
             )}
             <button
               onClick={() => handleRemove(user)}
-              className="mt-4 px-4 py-2 bg-red-500 text-white rounded-md"
+              className="mt-4 px-4 py-2 border border-red-500 text-red-600 hover:bg-red-500 hover:text-white rounded-md"
             >
               Leave Group
             </button>

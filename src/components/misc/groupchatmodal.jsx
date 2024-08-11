@@ -90,33 +90,24 @@ Authorization: `Bearer ${user.token}`,
             onClick={onClose}
           ></div>
           <div className="bg-white rounded-lg shadow-lg p-6 z-50">
-            <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-bold">Create Group Chat</h2>
-              <button
-                className="text-gray-500 hover:text-gray-800"
-                onClick={onClose}
-              >
-                &times;
-              </button>
-            </div>
             <div className="flex flex-col items-center mt-4">
               <input
                 type="text"
-                placeholder="Chat Name"
-                className="w-full p-2 mb-3 border rounded-lg"
+                placeholder="Group Name"
+                className="w-full p-2 mb-3 border-b-2 border-violet-500 rounded-lg focus:outline-none"
                 onChange={(e) => setGroupChatName(e.target.value)}
               />
               <input
                 type="text"
-                placeholder="Add Users eg: ujjwal,jai,rahul"
-                className="w-full p-2 mb-3 border rounded-lg"
+                placeholder="Add Users eg: ujjwal,jai"
+                className="w-full p-2 mb-3 border-b-2 border-violet-500 rounded-lg focus:outline-none"
                 onChange={(e) => handleSearch(e.target.value)}
               />
               <div className="w-full flex flex-wrap mb-3">
                 {selectedUsers.map((u) => (
                   <div
                     key={u._id}
-                    className="bg-gray-200 rounded-lg p-2 m-1"
+                    className="bg-violet-100 border-b-2 border-violet-400 rounded-lg p-2 m-1"
                   >
                     {u.name}
                     <button
@@ -129,7 +120,7 @@ Authorization: `Bearer ${user.token}`,
                 ))}
               </div>
               {loading ? (
-                <div>Loading...</div>
+                <div className="text-violet-800 font-semibold">Loading...</div>
               ) : (
                 searchResult.slice(0, 4).map((user) => (
                   <UserListItem
@@ -142,10 +133,10 @@ Authorization: `Bearer ${user.token}`,
             </div>
             <div className="flex justify-end mt-4">
               <button
-                className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+                className="border-2 border-violet-200 text-violet-500 hover:text-white hover:bg-violet-500 px-2 py-1 rounded-lg"
                 onClick={handleSubmit}
               >
-                Create Chat
+                Create
               </button>
             </div>
           </div>

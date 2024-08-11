@@ -73,8 +73,8 @@ const MyChats = ({ fetchAgain }) => {
                   onClick={() => setSelectedChat(chat)}
                   className={`cursor-pointer px-3 py-2 rounded-lg border border-b-violet-500 ${
                     selectedChat === chat
-                      ? "text-white bg-violet-500"
-                      : "bg-gray-100 text-violet-900  hover:bg-violet-200"
+                      ? "text-white bg-violet-500 "
+                      : "bg-gray-100 text-violet-900 shadow-xl hover:bg-violet-100"
                   }`}
                 >
                   <div>

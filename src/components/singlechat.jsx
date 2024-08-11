@@ -27,14 +27,15 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               <div className="text-2xl font-bold">
                 <button
                   className="text-violet-500 hover:text-violet-300 rounded-md px-1"
-                  onClick={handleProfileClick}
+                  onClick={()=>handleProfileClick()}
                 >
                   {capitalizeFirstLetter(getSender(user, selectedChat.users))}
                 </button>
                 <Profilemodal
                   user={getSenderFull(user, selectedChat.users)}
                   showModal={showModal}
-                  setShowModal={setShowModal}
+                  setShowModal={()=>setShowModal()}
+                  
                 />
               </div>
             ) : (
@@ -53,8 +54,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         </>
       ) : (
         <div className="flex items-center justify-center h-full">
-          <div className="text-3xl font-sans">
-            Click on a user to start chatting
+          <div className="text-3xl font-sans font-semibold text-violet-900 shadow-lg p-2 rounded-lg border-b-2 border-b-violet-300" >
+            Click any user to chat
           </div>
         </div>
       )}
