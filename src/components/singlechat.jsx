@@ -9,7 +9,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const { user, selectedChat, setSelectedChat } = ChatState();
   const [showModal, setShowModal] = useState(false);
 
-  const capitalizeFirstLetter=(string)=> {
+  const capitalizeFirstLetter=(string)=> {                     
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 

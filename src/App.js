@@ -1,8 +1,8 @@
-import { Divider } from "@chakra-ui/react";
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import home from "./pages/homepage";
 import chat from "./pages/chatpage";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (

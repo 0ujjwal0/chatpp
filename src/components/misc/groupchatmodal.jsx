@@ -84,12 +84,12 @@ Authorization: `Bearer ${user.token}`,
     <>
       <span onClick={onOpen}>{children}</span>
       {isOpen && (
-        <div className="fixed inset-0 flex items-center justify-center z-50">
+        <div className="fixed inset-0  flex items-center justify-center z-50">
           <div
             className="fixed inset-0 bg-black opacity-50"
             onClick={onClose}
           ></div>
-          <div className="bg-white rounded-lg shadow-lg p-6 z-50">
+          <div className="bg-gradient-to-br from-slate-400 to-violet-100 rounded-lg shadow-lg p-6 z-50">
             <div className="flex flex-col items-center mt-4">
               <input
                 type="text"

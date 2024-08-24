@@ -147,15 +147,15 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
       </button>
 
       {isOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
-          <div className="relative flex flex-col items-center bg-white p-6 rounded-lg shadow-lg">
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50" >
+          <div className="relative flex flex-col items-center bg-gradient-to-br from-slate-200 to-violet-100 p-6 rounded-lg shadow-lg" >
             <button
               onClick={onClose}
-              className="absolute top-2 right-2 text-xl font-bold"
+              className="absolute top-2 right-2 text-xl text-gray-500 hover:bg-red-500 hover:text-white w-6"
             >
               &times;
             </button>
-            <h2 className="text-2xl font-bold mb-4 text-violet-700">
+            <h2 className="text-2xl font-bold mb-4 text-violet-900">
               {selectedChat.chatName.toUpperCase()}
             </h2>
             <div className="w-full flex flex-wrap mb-4">
@@ -178,7 +178,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
               />
               <button
                 onClick={handleRename}
-                className="px-4 py-2 bg-gray-00 hover:bg-violet-400 hover:text-violet-50 text-violet-300 rounded-r-md border-b-2 border-violet-500"
+                className="px-4 py-2 bg-white hover:bg-violet-400 hover:text-violet-50 text-violet-600 rounded-r-md border-b-2 border-violet-500"
                 disabled={renameloading}
               >
                 {renameloading ? "Updating..." : "Update"}

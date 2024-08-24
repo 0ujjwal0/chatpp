@@ -83,7 +83,7 @@ const Sidedrawer = () => {
   };
 
   return (
-    <div className="border border-b-2 border-b-gray-300 bg-white flex justify-between items-center">
+    <div className=" border-b-gray-300  flex justify-between items-center">
       <div className="p-4 relative ">
         <input
           className="rounded-lg py-1 px-4 w-full focus:outline-none bg-gray-200 text-violet-300 hover:bg-violet-100" // Added padding to make space for the icon
@@ -94,10 +94,6 @@ const Sidedrawer = () => {
           <SearchIcon className=" text-violet-500 " />
         </div>
       </div>
-
-      <h1 className="p-4 text-xl text-violet-700 font-bold cursor-pointer hidden sm:block ">
-        CAMP
-      </h1>
 
       <div className="p-4 relative flex ">
         <button
