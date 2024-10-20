@@ -7,6 +7,7 @@ import UpdateGroupChatModal from "./misc/updategroupchatmodal";
 import CircularProgress from "@mui/material/CircularProgress";
 import axios from "axios";
 import { toast } from "react-toastify";
+import ScrollableChat from "./ScrollableChat";
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [messages, setMessages] = useState([]);
@@ -104,6 +105,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 <UpdateGroupChatModal
                   fetchAgain={fetchAgain}
                   setFetchAgain={setFetchAgain}
+                  fetchMessages={fetchMessages}
                 />
               </div>
             )}
@@ -118,7 +120,9 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 />
               </div>
             ) : (
-              <div>messages</div>
+              <div className="messages">
+                <ScrollableChat messages={messages}/>
+              </div>
             )}
 
             <input
