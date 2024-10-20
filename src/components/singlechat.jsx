@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { ChatState } from "../context/chatprovider";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { getSender, getSenderFull } from "../config/chatlogics";
@@ -24,7 +24,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     setShowModal(true);
   };
 
-  const fetchMessages = async () => {
+  const fetchMessages = useCallback(async () => {
     if (!selectedChat) return;
     try {
       const config = {
@@ -37,17 +37,19 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         `/api/message/${selectedChat._id}`,
         config
       );
-      console.log(data);
+      console.log("Fetched Messages: ", data);
       setMessages(data);
       setLoading(false);
     } catch (error) {
-      toast.error("failed to load the messages", { autoClose: 2000 });
+      toast.error("Failed to load the messages", { autoClose: 2000 });
+      setLoading(false);
     }
-  };
+  }, [selectedChat, user.token]);
 
   useEffect(() => {
     fetchMessages();
-  }, [selectedChat]);
+  }, [selectedChat, fetchMessages]);
+
   const sendMessage = async (ev) => {
     if (ev.key === "Enter" && newMessage) {
       try {
@@ -57,23 +59,22 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             Authorization: `Bearer ${user.token}`,
           },
         };
-        setNewMessage("");
         const { data } = await axios.post(
           "/api/message",
           { content: newMessage, chatId: selectedChat._id },
           config
         );
-        console.log(data);
-
         setMessages([...messages, data]);
+        setNewMessage("");
+        console.log("Sent Message: ", data); // Log the sent message
       } catch (error) {
-        toast.error("failed to send the message", { autoClose: 2000 });
+        toast.error("Failed to send the message", { autoClose: 2000 });
       }
     }
   };
+
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
-    //typing indicator logic
   };
 
   return (
@@ -83,20 +84,20 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           <div className="flex justify-between items-center w-full border border-b-violet-300 rounded-lg p-1 px-2">
             <ArrowBackIosNewIcon
               className="text-violet-500"
-              onClick={() => setSelectedChat("")}
+              onClick={() => setSelectedChat(null)} // Use null instead of an empty string
             />
             {!selectedChat.isGroupChat ? (
               <div className="text-2xl font-bold">
                 <button
                   className="text-violet-500 hover:text-violet-300 rounded-md px-1"
-                  onClick={() => handleProfileClick()}
+                  onClick={handleProfileClick}
                 >
                   {capitalizeFirstLetter(getSender(user, selectedChat.users))}
                 </button>
                 <Profilemodal
                   user={getSenderFull(user, selectedChat.users)}
                   showModal={showModal}
-                  setShowModal={() => setShowModal()}
+                  setShowModal={setShowModal} // Pass the correct function
                 />
               </div>
             ) : (
@@ -110,27 +111,22 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               </div>
             )}
           </div>
-          <div className="m-auto h-full w-full flex  justify-center items-center">
-            {!loading ? (
-              <div className="">
-                <CircularProgress
-                  w={50}
-                  h={50}
-                  color="secondary"
-                />
-              </div>
+
+          <div className="m-auto h-full w-full flex justify-center items-center">
+            {loading ? (
+              <CircularProgress w={50} h={50} color="secondary" />
             ) : (
               <div className="messages">
-                <ScrollableChat messages={messages}/>
+                <ScrollableChat messages={messages} />
               </div>
             )}
-
             <input
               type="text"
-              placeholder="enter a message..."
+              placeholder="Enter a message..."
               value={newMessage}
               onKeyDown={sendMessage}
               onChange={typingHandler}
+              className="input-class" // Add appropriate styling for your input
             />
           </div>
         </>

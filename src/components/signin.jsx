@@ -1,44 +1,43 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
-import { json, useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [show ,setShow]=useState(false);
-  const [loading,setLoading]=useState(false);
-  
-  const navigate=useNavigate();
-  
-  const handleSubmit = async(e) => {
+  // eslint-disable-next-line no-unused-vars
+  const [show, setShow] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     if (!email || !password) {
-      toast.warning("Please fill in all fields",{autoClose:3000});
+      toast.warning("Please fill in all fields", { autoClose: 3000 });
       setLoading(false);
       return;
     }
-    try{
-      const config={
-        headers:{
-          "content-type":"application/json",
+    try {
+      const config = {
+        headers: {
+          "content-type": "application/json",
         },
       };
-      const{data}=await axios.post(
+      const { data } = await axios.post(
         "/api/user/login",
-        {email,password},
+        { email, password },
         config
       );
-      toast.success("login successful",{autoClose:3000});
-      localStorage.setItem("userInfo",JSON.stringify(data));
+      toast.success("login successful", { autoClose: 3000 });
+      localStorage.setItem("userInfo", JSON.stringify(data));
       setLoading(false);
       navigate("/chats");
-    }catch(error){
-      toast.error("error occured!!",{autoClose:3000});
+    } catch (error) {
+      toast.error("error occured!!", { autoClose: 3000 });
       setLoading(false);
     }
-
-    
   };
 
   return (
@@ -55,7 +54,6 @@ const SignIn = () => {
           placeholder=" "
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          
         />
         <label
           htmlFor="signin_email"
@@ -74,7 +72,6 @@ const SignIn = () => {
           placeholder=" "
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          
         />
         <label
           htmlFor="signin_password"

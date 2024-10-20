@@ -11,52 +11,52 @@ const MyChats = ({ fetchAgain }) => {
   const [loggedUser, setLoggedUser] = useState();
   const { selectedChat, setSelectedChat, user, chats, setChats } = ChatState();
 
-  const fetchChats = async () => {
-    if (!user || !user.token) {
-      toast.error("User not authenticated", { autoClose: 3000 });
-      return;
-    }
-    try {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      };
-      const { data } = await axios.get("/api/chat", config);
-      setChats(data);
-      console.log(data);
-    } catch (error) {
-      const errorMsg = error.response
-        ? error.response.data.message
-        : error.message;
-      toast.error(`Error occurred: ${errorMsg}`, { autoClose: 3000 });
-    }
-  };
-
   useEffect(() => {
     const storedUser = localStorage.getItem("userInfo");
     if (storedUser) {
       setLoggedUser(JSON.parse(storedUser));
     }
 
+    const fetchChats = async () => {
+      if (!user || !user.token) {
+        toast.error("User not authenticated", { autoClose: 3000 });
+        return;
+      }
+      try {
+        const config = {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        };
+        const { data } = await axios.get("/api/chat", config);
+        setChats(data);
+        console.log(data);
+      } catch (error) {
+        const errorMsg = error.response
+          ? error.response.data.message
+          : error.message;
+        toast.error(`Error occurred: ${errorMsg}`, { autoClose: 3000 });
+      }
+    };
+
     if (user) {
       fetchChats();
     }
-  }, [fetchAgain]);
+  }, [fetchAgain, user, setChats]); // Removed fetchChats from dependencies
 
   return (
     <div
       className={`flex flex-col items-center p-3 bg-white rounded-lg w-full md:w-1/4 border border-b-violet-500
-  ${selectedChat ? "hidden md:flex" : "flex"}`}
+      ${selectedChat ? "hidden md:flex" : "flex"}`}
     >
       <div
         className={`flex justify-end items-center p-3 pb-3 w-full 
-    text-xl md:text-2xl lg:text-3xl font-sans`}
+        text-xl md:text-2xl lg:text-3xl font-sans`}
       >
         <Groupchatmodal>
           <button
             className={`hover:text-white hover:bg-violet-500
-        text-sm md:text-xs lg:text-base text-gray-600 focus:outline-none px-2 rounded-lg border border-b-violet-500`}
+              text-sm md:text-xs lg:text-base text-gray-600 focus:outline-none px-2 rounded-lg border border-b-violet-500`}
           >
             <AddIcon className="text-violet-600 " />
             New Group

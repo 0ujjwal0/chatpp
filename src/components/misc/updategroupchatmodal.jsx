@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { ChatState } from "../../context/chatprovider";
-import { getSender,getSenderFull } from "../../config/chatlogics";
 import UserBadgeItem from "../useravatar/userBadgeItem";
 import UserListItem from "../useravatar/userlistitem";
 import axios from "axios";
 import { toast } from "react-toastify"; // Using react-toastify for toasts
 
-const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain,fetchMessages }) => {
+const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
   const [groupChatName, setGroupChatName] = useState("");
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
@@ -140,16 +139,13 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain,fetchMessages }) => {
 
   return (
     <>
-      <button
-        onClick={onOpen}
-        className="flex items-center"
-      >
+      <button onClick={onOpen} className="flex items-center">
         View
       </button>
 
       {isOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50" >
-          <div className="relative flex flex-col items-center bg-gradient-to-br from-slate-200 to-violet-100 p-6 rounded-lg shadow-lg" >
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+          <div className="relative flex flex-col items-center bg-gradient-to-br from-slate-200 to-violet-100 p-6 rounded-lg shadow-lg">
             <button
               onClick={onClose}
               className="absolute top-2 right-2 text-xl text-gray-500 hover:bg-red-500 hover:text-white w-6"

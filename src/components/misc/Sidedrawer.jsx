@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
-import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
 import Avatar from "@mui/material/Avatar";
 import { ChatState } from "../../context/chatprovider";
 import Profilemodal from "./profilemodal";
@@ -96,10 +95,7 @@ const Sidedrawer = () => {
       </div>
 
       <div className="p-4 relative flex ">
-        <button
-          aria-label="Notifications "
-          className="hidden md:flex mt-2"
-        >
+        <button aria-label="Notifications " className="hidden md:flex mt-2">
           <NotificationsActiveIcon className=" text-violet-500" />
         </button>
         <button
